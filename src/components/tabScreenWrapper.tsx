@@ -3,9 +3,7 @@ import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import AppText from "@/components/appText";
-import { colors } from "@/lib/colors";
 import { useTheme } from "@/lib/themeContext";
-import { ThemeOptions } from "@/lib/types";
 
 type TabScreenWrapperProps = {
   title: string;
@@ -15,27 +13,24 @@ export default function TabScreenWrapper({
   title,
   children,
 }: PropsWithChildren<TabScreenWrapperProps>) {
-  const { theme } = useTheme();
-  const styles = createStyleSheet(theme);
+  const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       <AppText style={styles.title}>{title}</AppText>
       {children}
     </SafeAreaView>
   );
 }
 
-const createStyleSheet = (theme: ThemeOptions) =>
-  StyleSheet.create({
-    container: {
-      flex: 1,
-      padding: 20,
-      backgroundColor: theme === "dark" ? colors.dark.background : colors.light.background,
-    },
-    title: {
-      fontSize: 36,
-      textAlign: "center",
-      marginBottom: 20,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+  },
+  title: {
+    fontSize: 36,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+});

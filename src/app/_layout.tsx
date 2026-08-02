@@ -1,7 +1,6 @@
 import { Stack } from "expo-router";
 
 import SplashController from "@/components/splashController";
-import { colors } from "@/lib/colors";
 import { ThemeProvider, useTheme } from "@/lib/themeContext";
 
 export default function RootLayout() {
@@ -16,12 +15,12 @@ export default function RootLayout() {
 const RootNavigator = () => {
   // TODO: replace with auth service hook that gets user status
   const user = false;
-  const { theme } = useTheme();
-
-  const backgroundColor = theme === "light" ? colors.light.background : colors.dark.background;
+  const { colors } = useTheme();
 
   return (
-    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor } }}>
+    <Stack
+      screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}
+    >
       <Stack.Protected guard={!!user}>
         <Stack.Screen name="(tabs)" />
       </Stack.Protected>

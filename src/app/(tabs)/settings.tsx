@@ -4,15 +4,13 @@ import { Pressable, StyleSheet, View } from "react-native";
 import AppText from "@/components/appText";
 import ButtonGroup from "@/components/buttonGroup";
 import TabScreenWrapper from "@/components/tabScreenWrapper";
-import { colors } from "@/lib/colors";
 import { useTheme } from "@/lib/themeContext";
-import { ThemeOptions, ThemeSettingOptions } from "@/lib/types";
+import { ThemeSettingOptions } from "@/lib/types";
 
 const OPTIONS = ["system", "light", "dark"];
 
 export default function SettingsScreen() {
-  const { theme, themeSetting, changeThemeSetting } = useTheme();
-  const styles = createStyleSheet(theme);
+  const { colors, themeSetting, changeThemeSetting } = useTheme();
 
   const [selectedThemeIndex, setSelectedThemeIndex] = useState(0);
 
@@ -36,28 +34,26 @@ export default function SettingsScreen() {
         />
         <AppText style={styles.heading}>Account</AppText>
         {/* TODO: replace with auth service sign out function */}
-        <Pressable onPress={() => console.log("Signed out")} style={styles.button}>
-          <AppText style={styles.buttonText}>Sign Out</AppText>
+        <Pressable
+          onPress={() => console.log("Signed out")}
+          style={[styles.button, { backgroundColor: colors.surface }]}
+        >
+          <AppText style={{ color: colors.error }}>Sign Out</AppText>
         </Pressable>
       </View>
     </TabScreenWrapper>
   );
 }
 
-const createStyleSheet = (theme: ThemeOptions) =>
-  StyleSheet.create({
-    container: {
-      gap: 20,
-    },
-    heading: {
-      fontSize: 28,
-    },
-    button: {
-      padding: 8,
-      alignItems: "center",
-      backgroundColor: theme === "dark" ? colors.dark.surface : colors.light.surface,
-    },
-    buttonText: {
-      color: theme === "dark" ? colors.dark.error : colors.light.error,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    gap: 20,
+  },
+  heading: {
+    fontSize: 28,
+  },
+  button: {
+    padding: 8,
+    alignItems: "center",
+  },
+});

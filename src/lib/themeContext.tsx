@@ -4,6 +4,8 @@ import { useColorScheme } from "react-native";
 
 import { ThemeOptions, ThemeSettingOptions } from "@/lib/types";
 
+import { colors } from "./colors";
+
 const THEME_STORAGE_KEY = "consilium_theme";
 
 type ThemeContextType = {
@@ -77,5 +79,7 @@ export const useTheme = () => {
     throw new Error("Component exists outside the ThemeProvider");
   }
 
-  return context;
+  const colorSet = colors[context.theme];
+
+  return { ...context, colors: colorSet };
 };

@@ -1,8 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors } from "@/lib/colors";
 import { useTheme } from "@/lib/themeContext";
-import { ThemeOptions } from "@/lib/types";
 
 type ButtonGroupProps = {
   options: string[];
@@ -11,11 +9,10 @@ type ButtonGroupProps = {
 };
 
 export default function ButtonGroup({ options, selectedIndex, onChange }: ButtonGroupProps) {
-  const { theme } = useTheme();
-  const styles = createStyleSheet(theme);
+  const { colors } = useTheme();
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { borderColor: colors.border }]}>
       {options.map((option, index) => {
         const isSelected = index === selectedIndex;
         const isFirst = index === 0;
@@ -27,13 +24,18 @@ export default function ButtonGroup({ options, selectedIndex, onChange }: Button
             onPress={() => onChange(index)}
             style={[
               styles.button,
-              isSelected && styles.selected,
+              { backgroundColor: colors.surface },
+              isSelected && { ...styles.selected, backgroundColor: colors.surfaceSecondary },
               isFirst && styles.first,
               isLast && styles.last,
             ]}
           >
             <Text
-              style={[styles.text, isSelected && styles.selectedText]}
+              style={[
+                styles.text,
+                { color: colors.text },
+                isSelected && { ...styles.selectedText, color: colors.primary },
+              ]}
             >{`${option.charAt(0).toUpperCase()}${option.slice(1)}`}</Text>
           </Pressable>
         );
@@ -42,41 +44,34 @@ export default function ButtonGroup({ options, selectedIndex, onChange }: Button
   );
 }
 
-const createStyleSheet = (theme: ThemeOptions) =>
-  StyleSheet.create({
-    container: {
-      flexDirection: "row",
-      borderWidth: 2,
-      borderRadius: 8,
-      borderColor: theme === "dark" ? colors.dark.border : colors.light.border,
-      padding: 4,
-    },
-    button: {
-      flex: 1,
-      alignItems: "center",
-      paddingVertical: 8,
-      paddingHorizontal: 16,
-      backgroundColor: theme === "dark" ? colors.dark.surface : colors.light.surface,
-    },
-    selected: {
-      backgroundColor:
-        theme === "dark" ? colors.dark.surfaceSecondary : colors.light.surfaceSecondary,
-      borderRadius: 6,
-    },
-    first: {
-      borderTopLeftRadius: 6,
-      borderBottomLeftRadius: 6,
-    },
-    last: {
-      borderTopRightRadius: 6,
-      borderBottomRightRadius: 6,
-    },
-    text: {
-      fontSize: 16,
-      color: theme === "dark" ? colors.dark.text : colors.light.text,
-    },
-    selectedText: {
-      fontWeight: "bold",
-      color: theme === "dark" ? colors.dark.primary : colors.light.primary,
-    },
-  });
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    borderWidth: 2,
+    borderRadius: 8,
+    padding: 4,
+  },
+  button: {
+    flex: 1,
+    alignItems: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+  selected: {
+    borderRadius: 6,
+  },
+  first: {
+    borderTopLeftRadius: 6,
+    borderBottomLeftRadius: 6,
+  },
+  last: {
+    borderTopRightRadius: 6,
+    borderBottomRightRadius: 6,
+  },
+  text: {
+    fontSize: 16,
+  },
+  selectedText: {
+    fontWeight: "bold",
+  },
+});
